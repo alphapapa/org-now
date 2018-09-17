@@ -1,0 +1,68 @@
+#+TITLE: org-now
+
+#+PROPERTY: LOGGING nil
+
+#+HTML: <a href="https://alphapapa.github.io/dont-tread-on-emacs/"><img src="images/dont-tread-on-emacs-150.png" align="right"></a>
+
+This package provides commands to conveniently show Org headings in a sidebar window while you're working on them.  A heading in one of your Org files is defined as the "now" heading, and other headings are refiled to it with one command, and back to their original location with another.
+
+The sidebar window is an indirect buffer created with =org-tree-to-indirect-buffer=, so you can work in it as you would a normal buffer.  Being a special Emacs side window, it's persistent, resisting being closed by accident by window management commands.
+
+Note that this package adds Org UUIDs to entries in property drawers when they are refiled, to ensure they are tracked properly while they're being moved.
+
+* Screenshots
+
+There's nothing special about the appearance of this package's functionality.  But here are two example screenshots.
+
+By default, the sidebar's outline is shown at level 2, so the "now" heading should be a top-level heading:
+[[images/screenshot1.png]]
+
+The sidebar is just an Org buffer, so you can expand it, type into it, etc:
+[[images/screenshot2.png]]
+
+* Installation
+
+Install these required packages:
+
++ [[https://github.com/magnars/dash.el][dash.el]]
+
+Then put =org-now.el= in your ~load-path~, and put this in your init file:
+
+#+BEGIN_SRC elisp
+  (require 'org-now)
+#+END_SRC
+
+** COMMENT MELPA
+
+# Not on MELPA yet.
+
+If you installed from MELPA, you're done.
+* Usage
+
+1.  Run the command =org-now= to show the sidebar.  You'll be prompted to configure the =org-now-location= setting to point to a heading in one of your Org files where you want to temporarily refile "now" tasks.
+2.  Refile tasks to the "now" buffer with the command =org-now-refile-to-now=.
+3.  Move tasks back to their original location with the command =org-now-refile-to-previous-location=.
+
+Here's a configuration with mnemonic keybindings that you may find convenient, using [[https://github.com/jwiegley/use-package][use-package]] and [[https://github.com/noctuid/general.el][general]]:
+
+#+BEGIN_SRC elisp
+  (use-package org-now
+    :general (:keymaps 'org-mode-map
+                       :prefix "M-SPC"
+                       "rn" #'org-now-refile-to-now
+                       "rp" #'org-now-refile-to-previous-location))
+#+END_SRC
+
+* Development
+
+Bug reports, feature requests, suggestions — /oh my/!
+
+* License
+
+GPLv3
+
+# Local Variables:
+# org-export-with-properties: ()
+# org-export-with-title: t
+# End:
+
