@@ -125,7 +125,7 @@ subsequent string should be a heading in the outline hierarchy."
   "Refile current entry to the `org-now' entry."
   (interactive)
   (org-now--ensure-configured)
-  (when-let* ((target-marker (org-find-olp org-now-location))
+  (when-let* ((target-marker (org-now--marker))
               (rfloc (list nil (car org-now-location) nil target-marker))
               (previous-location (or (save-excursion
                                        (when (org-up-heading-safe)
@@ -191,13 +191,26 @@ If not, open customization and raise an error."
                  (buffer-live-p org-now-buffer))
         org-now-buffer)
       (save-window-excursion
-        (org-with-point-at (org-find-olp org-now-location)
-          (org-tree-to-indirect-buffer)
+        (org-with-point-at (org-now--marker)
+          ;; MAYBE: Optionally hide the mode line.  It looks nicer, but it also
+          ;; hides whether the buffer has been modified, which can be important,
+          ;; especially for users not using `real-auto-save'.
+          (pcase (length org-now-location)
+            (1 (setq header-line-format (propertize "org-now" 'face '(:inherit org-agenda-date-today))))
+            (_ (org-tree-to-indirect-buffer)))
           (toggle-truncate-lines 1)
           (org-global-cycle 2)
           (rename-buffer "*org-now*")
           (run-hooks 'org-now-hook)
           (setq org-now-buffer (current-buffer))))))
+
+(defun org-now--marker ()
+  "Return marker pointing at `org-now' location."
+  (pcase (length org-now-location)
+    (1 (with-current-buffer (or (find-buffer-visiting (car org-now-location))
+                                (find-file-noselect (car org-now-location)))
+         (copy-marker (point-min))))
+    (_ (org-find-olp org-now-location))))
 
 ;;;; Footer
 
