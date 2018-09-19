@@ -97,6 +97,10 @@ subsequent string should be a heading in the outline hierarchy."
   "Org heading level to expand to in side buffer by default."
   :type 'integer)
 
+(defcustom org-now-hook nil
+  "Functions called after creating the `org-now' buffer."
+  :type '(repeat function))
+
 ;;;; Variables
 
 (defvar org-now-buffer nil
@@ -192,6 +196,7 @@ If not, open customization and raise an error."
           (toggle-truncate-lines 1)
           (org-global-cycle 2)
           (rename-buffer "*org-now*")
+          (run-hooks 'org-now-hook)
           (setq org-now-buffer (current-buffer))))))
 
 ;;;; Footer
