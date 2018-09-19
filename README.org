@@ -53,6 +53,26 @@ Here's a configuration with mnemonic keybindings that you may find convenient, u
                        "rp" #'org-now-refile-to-previous-location))
 #+END_SRC
 
+** Hook examples
+
+The ~org-now-hook~ option can be used to run user-defined functions after the =org-now= buffer is created.  Here are two examples you might find useful.
+
++ Disable mode-line ::
+   If you don't need or want the mode-line in the sidebar window, this function will disable it.  In this case, it's recommended to use something like ~real-auto-save-mode~ in Org buffers to ensure that refiled headings are automatically saved to disk.
+
+#+BEGIN_SRC elisp
+  (lambda ()
+    (setq mode-line-format nil))
+#+END_SRC
+
++ Set =org-level-1= heading to 10 point size ::
+   This is helpful when your =org-now-location= is a file, in which case headings will be top-level headings.  This function can be used to reduce the font size so the headings fit better in the sidebar window.  It works especially well if your =org-level-= faces each inherit from their higher-level face (i.e. =org-level-2= inherits from =org-level-1=, etc.).
+
+#+BEGIN_SRC elisp
+  (lambda ()
+    (face-remap-add-relative 'org-level-1 '(:height 100)))
+#+END_SRC
+
 * Development
 
 Bug reports, feature requests, suggestions — /oh my/!
