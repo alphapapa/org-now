@@ -101,6 +101,11 @@ subsequent string should be a heading in the outline hierarchy."
   "Functions called after creating the `org-now' buffer."
   :type '(repeat function))
 
+(defcustom org-now-no-other-window t
+  "Whether `other-window' commands should cycle through the `org-now' sidebar window.
+See info node `(elisp)Cyclic Window Ordering'."
+  :type 'boolean)
+
 ;;;; Variables
 
 (defvar org-now-buffer nil
@@ -112,13 +117,16 @@ subsequent string should be a heading in the outline hierarchy."
 
 ;;;###autoload
 (defun org-now ()
-  "Display \"now\" buffer."
+  "Focus `org-now' sidebar window, displaying it anew if necessary."
   (interactive)
-  (display-buffer-in-side-window
-   (org-now--buffer)
-   (list (cons 'side org-now-window-side)
-         (cons 'slot 0)
-         (cons 'window-parameters (list (cons 'no-delete-other-windows t))))))
+  (if-let* ((window (get-buffer-window (org-now--buffer))))
+      (select-window window)
+    (display-buffer-in-side-window
+     (org-now--buffer)
+     (list (cons 'side org-now-window-side)
+           (cons 'slot 0)
+           (cons 'window-parameters (list (cons 'no-delete-other-windows t)
+                                          (cons 'no-other-window org-now-no-other-window)))))))
 
 ;;;###autoload
 (defun org-now-refile-to-now ()

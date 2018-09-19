@@ -39,7 +39,7 @@ Then put =org-now.el= in your ~load-path~, and put this in your init file:
 If you installed from MELPA, you're done.
 * Usage
 
-1.  Run the command =org-now= to show the sidebar.  You'll be prompted to configure the =org-now-location= setting to point to a heading in one of your Org files where you want to temporarily refile "now" tasks.
+1.  Run the command =org-now= to show the sidebar, or select its window if it's already open.  (On first run, you'll be prompted to configure the =org-now-location= setting to point to a place in one of your Org files where you want to temporarily refile "now" tasks.)
 2.  Refile tasks to the "now" buffer with the command =org-now-refile-to-now=.
 3.  Move tasks back to their original location with the command =org-now-refile-to-previous-location=.
 
