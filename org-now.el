@@ -120,9 +120,7 @@ subsequent string should be a heading in the outline hierarchy."
 (defun org-now-refile-to-now ()
   "Refile current entry to the `org-now' entry."
   (interactive)
-  (unless org-now-location
-    (customize-variable 'org-now-location)
-    (user-error "Please configure `org-now-location'"))
+  (org-now--ensure-configured)
   (when-let* ((target-marker (org-find-olp org-now-location))
               (rfloc (list nil (car org-now-location) nil target-marker))
               (previous-location (or (save-excursion
@@ -175,8 +173,16 @@ property is removed after refiling."
 
 ;;;;; Support
 
+(defun org-now--ensure-configured ()
+  "Ensure `org-now-location' is set.
+If not, open customization and raise an error."
+  (unless org-now-location
+    (customize-variable 'org-now-location)
+    (user-error "Please configure `org-now-location'")))
+
 (defun org-now--buffer ()
   "Return the \"now\" buffer, creating it if necessary."
+  (org-now--ensure-configured)
   (or (when (and org-now-buffer
                  (buffer-live-p org-now-buffer))
         org-now-buffer)
