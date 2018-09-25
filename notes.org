@@ -1,0 +1,8 @@
+
+* Tasks
+
+** TODO Option to automatically save buffers after refiling
+
+** TODO Update screenshots
+
+Show example of refiling to top-level headings in a file and using the header line.
