@@ -106,11 +106,6 @@ subsequent string should be a heading in the outline hierarchy."
 See info node `(elisp)Cyclic Window Ordering'."
   :type 'boolean)
 
-;;;; Variables
-
-(defvar org-now-buffer nil
-  "The \"now\" buffer.")
-
 ;;;; Functions
 
 ;;;;; Commands
@@ -119,15 +114,14 @@ See info node `(elisp)Cyclic Window Ordering'."
 (defun org-now ()
   "Focus `org-now' sidebar window, displaying it anew if necessary."
   (interactive)
-  (if-let* ((window (get-buffer-window (org-now--buffer))))
-      (select-window window)
-    (select-window
-     (display-buffer-in-side-window
-      (org-now--buffer)
-      (list (cons 'side org-now-window-side)
-            (cons 'slot 0)
-            (cons 'window-parameters (list (cons 'no-delete-other-windows t)
-                                           (cons 'no-other-window org-now-no-other-window))))))))
+  (select-window
+   (or (get-buffer-window (org-now--buffer))
+       (display-buffer-in-side-window
+        (org-now--buffer)
+        (list (cons 'side org-now-window-side)
+              (cons 'slot 0)
+              (cons 'window-parameters (list (cons 'no-delete-other-windows t)
+                                             (cons 'no-other-window org-now-no-other-window))))))))
 
 ;;;###autoload
 (defun org-now-link ()
@@ -164,7 +158,7 @@ See info node `(elisp)Cyclic Window Ordering'."
       ;; after refiling the entry, so that if it's the only child of the "now"
       ;; heading, the new, indirect buffer will contain it.
       (org-now))
-    (with-current-buffer org-now-buffer
+    (with-current-buffer (get-buffer "*org-now*")
       ;; Re-cycle display levels in side buffer.
       (org-global-cycle org-now-default-cycle-level))))
 
@@ -209,22 +203,21 @@ If not, open customization and raise an error."
 (defun org-now--buffer ()
   "Return the \"now\" buffer, creating it if necessary."
   (org-now--ensure-configured)
-  (or (when (and org-now-buffer
-                 (buffer-live-p org-now-buffer))
-        org-now-buffer)
+  (or (get-buffer "*org-now*")
       (save-window-excursion
         (org-with-point-at (org-now--marker)
           ;; MAYBE: Optionally hide the mode line.  It looks nicer, but it also
           ;; hides whether the buffer has been modified, which can be important,
           ;; especially for users not using `real-auto-save'.
           (pcase (length org-now-location)
-            (1 (setq header-line-format (propertize "org-now" 'face '(:inherit org-agenda-date-today))))
+            (1 (setq header-line-format (propertize "org-now"
+                                                    'face '(:inherit org-agenda-date-today))))
             (_ (org-tree-to-indirect-buffer)))
           (toggle-truncate-lines 1)
           (org-global-cycle 2)
           (rename-buffer "*org-now*")
           (run-hooks 'org-now-hook)
-          (setq org-now-buffer (current-buffer))))))
+          (current-buffer)))))
 
 (defun org-now--link-buffer ()
   "Return buffer for refiling links from.
