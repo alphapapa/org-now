@@ -32,22 +32,6 @@ Then put =org-now.el= in your ~load-path~, and put this in your init file:
   (require 'org-now)
 #+END_SRC
 
-** COMMENT MELPA
-
-# Not on MELPA yet.
-
-If you installed from MELPA, you're done.
-* Usage
-
-When using ~org-now~ for the first time, you'll be prompted to configure the =org-now-location= setting to point to a place in one of your Org files where you want to temporarily refile "now" tasks.
-
-*Commands:*
-
--  ~org-now-refile-to-now~ :: Refile entry at point to the =org-now= buffer.
--  ~org-now-refile-to-previous-location~ :: Refile entry in =org-now= buffer back to its original location.
--  ~org-now-link~ :: Add a link to the entry at point to the =org-now= buffer.
--  ~org-now~ :: Show the =org-now= sidebar window, or select it if it's already open.  (The other commands do this automatically.)
-
 Here's a configuration with mnemonic keybindings that you may find convenient, using [[https://github.com/jwiegley/use-package][use-package]] and [[https://github.com/noctuid/general.el][general]]:
 
 #+BEGIN_SRC elisp
@@ -58,6 +42,23 @@ Here's a configuration with mnemonic keybindings that you may find convenient, u
                        "rn" #'org-now-refile-to-now
                        "rp" #'org-now-refile-to-previous-location))
 #+END_SRC
+
+** COMMENT MELPA
+
+# Not on MELPA yet.
+
+If you installed from MELPA, you're done.
+
+* Usage
+
+When using ~org-now~ for the first time, you'll be prompted to configure the =org-now-location= setting to point to a place in one of your Org files where you want to temporarily refile "now" tasks.
+
+*Commands:*
+
+-  ~org-now-link~ :: Add a link to the entry at point to the =org-now= buffer.
+-  ~org-now-refile-to-now~ :: Refile entry at point to the =org-now= buffer.
+-  ~org-now-refile-to-previous-location~ :: Refile entry in =org-now= buffer back to its original location.
+-  ~org-now~ :: Show the =org-now= sidebar window, or select it if it's already open.  (The other commands do this automatically.)
 
 ** Hook examples
 
