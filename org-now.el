@@ -125,7 +125,9 @@ See info node `(elisp)Cyclic Window Ordering'."
 
 ;;;###autoload
 (defun org-now-link ()
-  "Add link to current Org entry to `org-now' entry."
+  "Add link to current Org entry to `org-now' entry.
+This command works in any buffer that `org-store-link' can store
+a link for, not just in Org buffers."
   (interactive)
   ;; The docstring for `org-store-link' doesn't mention a return value, but it
   ;; currently returns the stored link string, so we can use that.

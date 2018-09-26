@@ -55,7 +55,7 @@ When using ~org-now~ for the first time, you'll be prompted to configure the =or
 
 *Commands:*
 
--  ~org-now-link~ :: Add a link to the entry at point to the =org-now= buffer.
+-  ~org-now-link~ :: Add a link to the entry at point to the =org-now= buffer.  This command works in any buffer that ~org-store-link~ can store a link for, not just in Org buffers.
 -  ~org-now-refile-to-now~ :: Refile entry at point to the =org-now= buffer.
 -  ~org-now-refile-to-previous-location~ :: Refile entry in =org-now= buffer back to its original location.
 -  ~org-now~ :: Show the =org-now= sidebar window, or select it if it's already open.  (The other commands do this automatically.)
