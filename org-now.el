@@ -130,6 +130,19 @@ See info node `(elisp)Cyclic Window Ordering'."
                                            (cons 'no-other-window org-now-no-other-window))))))))
 
 ;;;###autoload
+(defun org-now-link ()
+  "Add link to current Org entry to `org-now' entry."
+  (interactive)
+  ;; The docstring for `org-store-link' doesn't mention a return value, but it
+  ;; currently returns the stored link string, so we can use that.
+  (let* ((link (org-store-link nil))
+         (entry (concat "* " link)))
+    (with-current-buffer (org-now--link-buffer)
+      (erase-buffer)  ; Just in case
+      (insert entry)
+      (org-now-refile-to-now))))
+
+;;;###autoload
 (defun org-now-refile-to-now ()
   "Refile current entry to the `org-now' entry."
   (interactive)
@@ -212,6 +225,15 @@ If not, open customization and raise an error."
           (rename-buffer "*org-now*")
           (run-hooks 'org-now-hook)
           (setq org-now-buffer (current-buffer))))))
+
+(defun org-now--link-buffer ()
+  "Return buffer for refiling links from.
+Using one, hidden buffer for this avoids activating `org-mode'
+every time a link is refiled."
+  (or (get-buffer " *org-now-link-buffer*")
+      (with-current-buffer (get-buffer-create " *org-now-link-buffer*")
+        (org-mode)
+        (current-buffer))))
 
 (defun org-now--marker ()
   "Return marker pointing at `org-now' location."
