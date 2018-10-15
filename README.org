@@ -65,7 +65,7 @@ When using ~org-now~ for the first time, you'll be prompted to configure the =or
 The ~org-now-hook~ option can be used to run user-defined functions after the =org-now= buffer is created.  Here are two examples you might find useful.
 
 + Disable mode-line ::
-   If you don't need or want the mode-line in the sidebar window, this function will disable it.  In this case, it's recommended to use something like ~real-auto-save-mode~ in Org buffers to ensure that refiled headings are automatically saved to disk.
+   If you don't need or want the mode-line in the sidebar window, this function will disable it.  In this case, it's recommended to use something like ~real-auto-save-mode~ in Org buffers to ensure that refiled headings are automatically saved to disk, because you won't be able to see the buffer's modified status.
 
 #+BEGIN_SRC elisp
   (lambda ()
