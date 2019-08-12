@@ -95,7 +95,8 @@ subsequent string should be a heading in the outline hierarchy."
 
 (defcustom org-now-default-cycle-level 2
   "Org heading level to expand to in side buffer by default."
-  :type 'integer)
+  :type '(choice (integer :tag "Outline level")
+                 (const :tag "Don't cycle" nil)))
 
 (defcustom org-now-hook nil
   "Functions called after creating the `org-now' buffer."
@@ -160,9 +161,10 @@ a link for, not just in Org buffers."
       ;; after refiling the entry, so that if it's the only child of the "now"
       ;; heading, the new, indirect buffer will contain it.
       (org-now))
-    (with-current-buffer (get-buffer "*org-now*")
+    (when org-now-default-cycle-level
       ;; Re-cycle display levels in side buffer.
-      (org-global-cycle org-now-default-cycle-level))))
+      (with-current-buffer (get-buffer "*org-now*")
+        (org-global-cycle org-now-default-cycle-level)))))
 
 ;;;###autoload
 (defun org-now-refile-to-previous-location ()
@@ -216,9 +218,10 @@ If not, open customization and raise an error."
                                                     'face '(:inherit org-agenda-date-today))))
             (_ (org-tree-to-indirect-buffer)))
           (toggle-truncate-lines 1)
-          (org-global-cycle 2)
           (rename-buffer "*org-now*")
           (run-hooks 'org-now-hook)
+          (when org-now-default-cycle-level
+            (org-global-cycle org-now-default-cycle-level))
           (current-buffer)))))
 
 (defun org-now--link-buffer ()
