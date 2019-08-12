@@ -1,9 +1,5 @@
 * Tasks
 
-** TODO Add-link command
-
-Instead of actually refiling headings, we could also use links.
-
 ** TODO Option to automatically save buffers after refiling
 
 ** TODO Update screenshots
