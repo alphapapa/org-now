@@ -212,7 +212,7 @@ If not, open customization and raise an error."
           ;; hides whether the buffer has been modified, which can be important,
           ;; especially for users not using `real-auto-save'.
           (pcase (length org-now-location)
-            (1 (setq header-line-format (propertize "org-now"
+            (1 (setq header-line-format (propertize " org-now"
                                                     'face '(:inherit org-agenda-date-today))))
             (_ (org-tree-to-indirect-buffer)))
           (toggle-truncate-lines 1)
