@@ -116,13 +116,34 @@ See info node `(elisp)Cyclic Window Ordering'."
   "Focus `org-now' sidebar window, displaying it anew if necessary."
   (interactive)
   (select-window
-   (or (get-buffer-window (org-now--buffer))
+   (or (get-buffer-window (org-now-buffer))
        (display-buffer-in-side-window
-        (org-now--buffer)
+        (org-now-buffer)
         (list (cons 'side org-now-window-side)
               (cons 'slot 0)
               (cons 'window-parameters (list (cons 'no-delete-other-windows t)
                                              (cons 'no-other-window org-now-no-other-window))))))))
+
+;;;###autoload
+(defun org-now-buffer ()
+  "Return the \"now\" buffer, creating it if necessary."
+  (org-now--ensure-configured)
+  (or (get-buffer "*org-now*")
+      (save-window-excursion
+        (org-with-point-at (org-now--marker)
+          ;; MAYBE: Optionally hide the mode line.  It looks nicer, but it also
+          ;; hides whether the buffer has been modified, which can be important,
+          ;; especially for users not using `real-auto-save'.
+          (pcase (length org-now-location)
+            (1 (setq header-line-format (propertize " org-now"
+                                                    'face '(:inherit org-agenda-date-today))))
+            (_ (org-tree-to-indirect-buffer)))
+          (toggle-truncate-lines 1)
+          (rename-buffer "*org-now*")
+          (run-hooks 'org-now-hook)
+          (when org-now-default-cycle-level
+            (org-global-cycle org-now-default-cycle-level))
+          (current-buffer)))))
 
 ;;;###autoload
 (defun org-now-link ()
@@ -156,7 +177,7 @@ a link for, not just in Org buffers."
               (org-reverse-note-order t))
     (org-set-property "refiled_from" previous-location)
     (org-refile nil nil rfloc)
-    (unless (get-buffer-window (org-now--buffer) (selected-frame))
+    (unless (get-buffer-window (org-now-buffer) (selected-frame))
       ;; If the buffer is not already open and visible, call `org-now', but only
       ;; after refiling the entry, so that if it's the only child of the "now"
       ;; heading, the new, indirect buffer will contain it.
@@ -203,26 +224,6 @@ If not, open customization and raise an error."
   (unless org-now-location
     (customize-variable 'org-now-location)
     (user-error "Please configure `org-now-location'")))
-
-(defun org-now--buffer ()
-  "Return the \"now\" buffer, creating it if necessary."
-  (org-now--ensure-configured)
-  (or (get-buffer "*org-now*")
-      (save-window-excursion
-        (org-with-point-at (org-now--marker)
-          ;; MAYBE: Optionally hide the mode line.  It looks nicer, but it also
-          ;; hides whether the buffer has been modified, which can be important,
-          ;; especially for users not using `real-auto-save'.
-          (pcase (length org-now-location)
-            (1 (setq header-line-format (propertize " org-now"
-                                                    'face '(:inherit org-agenda-date-today))))
-            (_ (org-tree-to-indirect-buffer)))
-          (toggle-truncate-lines 1)
-          (rename-buffer "*org-now*")
-          (run-hooks 'org-now-hook)
-          (when org-now-default-cycle-level
-            (org-global-cycle org-now-default-cycle-level))
-          (current-buffer)))))
 
 (defun org-now--link-buffer ()
   "Return buffer for refiling links from.

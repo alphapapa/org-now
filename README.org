@@ -60,6 +60,9 @@ When using ~org-now~ for the first time, you'll be prompted to configure the =or
 -  ~org-now-refile-to-previous-location~ :: Refile entry in =org-now= buffer back to its original location.
 -  ~org-now~ :: Show the =org-now= sidebar window, or select it if it's already open.  (The other commands do this automatically.)
 
+*Functions:*
+-  =org-now-buffer= :: Return the =org-now= buffer, creating it if necessary.  Useful in functions that may display the buffer, e.g. in [[https://github.com/alphapapa/org-sidebar][org-sidebar]].  This function is autoloaded.
+
 ** Hook examples
 
 The ~org-now-hook~ option can be used to run user-defined functions after the =org-now= buffer is created.  Here are two examples you might find useful.
