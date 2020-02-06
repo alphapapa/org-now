@@ -107,6 +107,10 @@ subsequent string should be a heading in the outline hierarchy."
 See info node `(elisp)Cyclic Window Ordering'."
   :type 'boolean)
 
+(defface org-now-header
+  '((t (:weight bold)))
+  "For header in `org-now' buffer.")
+
 ;;;; Functions
 
 ;;;;; Commands
@@ -136,7 +140,7 @@ See info node `(elisp)Cyclic Window Ordering'."
           ;; especially for users not using `real-auto-save'.
           (pcase (length org-now-location)
             (1 (setq header-line-format (propertize " org-now"
-                                                    'face '(:inherit org-agenda-date-today))))
+                                                    'face 'org-now-header)))
             (_ (org-tree-to-indirect-buffer)))
           (toggle-truncate-lines 1)
           (rename-buffer "*org-now*")
