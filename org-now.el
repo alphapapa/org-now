@@ -220,6 +220,33 @@ property is removed after refiling."
                        and return t)))))
     (user-error "Heading has no previous location")))
 
+;;;###autoload
+(defalias 'org-now-agenda-link
+  ;; This command works in agenda buffers without modification.  For
+  ;; clarity, we define an alias that matches the other commands
+  ;; intended for use in the agenda.
+  #'org-now-link)
+
+;;;###autoload
+(defun org-now-agenda-refile-to-now ()
+  "Call `org-now-refile-to-now' from an Agenda buffer.
+Also usable in `org-agenda-bulk-custom-functions'."
+  (interactive)
+  (let* ((marker (get-text-property (point) 'org-hd-marker)))
+    (cl-assert marker)
+    (org-with-point-at marker
+      (call-interactively #'org-now-refile-to-now))))
+
+;;;###autoload
+(defun org-now-agenda-refile-to-previous-location ()
+  "Call `org-now-refile-to-previous-location' from an Agenda buffer.
+Also usable in `org-agenda-bulk-custom-functions'."
+  (interactive)
+  (let* ((marker (get-text-property (point) 'org-hd-marker)))
+    (cl-assert marker)
+    (org-with-point-at marker
+      (call-interactively #'org-now-refile-to-previous-location))))
+
 ;;;;; Support
 
 (defun org-now--ensure-configured ()

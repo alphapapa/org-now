@@ -53,14 +53,32 @@ If you installed from MELPA, you're done.
 
 When using ~org-now~ for the first time, you'll be prompted to configure the =org-now-location= setting to point to a place in one of your Org files where you want to temporarily refile "now" tasks.
 
-*Commands:*
+** Commands
 
 -  ~org-now~ :: Show the =org-now= sidebar window, or select it if it's already open.  (The other commands do this automatically.)
+
+*Refiling commands:*  These commands are usable in regular Org buffers.
+
 -  ~org-now-link~ :: Add a link to the entry at point to the =org-now= buffer.  This command works in any buffer that ~org-store-link~ can store a link for, not just in Org buffers.
 -  ~org-now-refile-to-now~ :: Refile entry at point to the =org-now= buffer.
 -  ~org-now-refile-to-previous-location~ :: Refile entry in =org-now= buffer back to its original location.
 
+*Agenda commands:*  These commands are usable in Org Agenda buffers.
+
+-  =org-now-agenda-link= :: Add a link to the entry at point to the =org-now= buffer.
+-  ~org-now-agenda-refile-to-now~ :: Refile entry at point to the =org-now= buffer.
+-  ~org-now-agenda-refile-to-previous-location~ :: Refile entry in =org-now= buffer back to its original location.
+
+They're also usable as Agenda "bulk" commands on marked entries.  You can configure them like this:
+
+#+BEGIN_SRC elisp
+  (setf org-agenda-bulk-custom-functions
+        '((?n org-now-agenda-refile-to-now)
+          (?P org-now-agenda-refile-to-previous-location)))
+#+END_SRC
+
 *Functions:*
+
 -  =org-now-buffer= :: Return the =org-now= buffer, creating it if necessary.  Useful in functions that may display the buffer, e.g. in [[https://github.com/alphapapa/org-sidebar][org-sidebar]].  This function is autoloaded.
 
 ** Hook examples
