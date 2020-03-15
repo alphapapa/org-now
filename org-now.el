@@ -70,6 +70,7 @@
 ;;;; Requirements
 
 (require 'org)
+(require 'org-id)
 
 (require 'dash)
 
