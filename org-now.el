@@ -169,6 +169,8 @@ a link for, not just in Org buffers."
   "Refile current entry to the `org-now' entry."
   (interactive)
   (org-now--ensure-configured)
+  ;; FIXME: When org-now-location is just a file path, entries seem to
+  ;; get refiled as subheadings rather than top-level headings.
   (when-let* ((target-marker (org-now--marker))
               (rfloc (list nil (car org-now-location) nil target-marker))
               (previous-location (or (save-excursion
