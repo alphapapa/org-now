@@ -141,7 +141,8 @@ See info node `(elisp)Cyclic Window Ordering'."
           ;; especially for users not using `real-auto-save'.
           (pcase (length org-now-location)
             (1 (switch-to-buffer (clone-indirect-buffer "*org-now*" nil)))
-            (_ (org-tree-to-indirect-buffer)))
+            (_ (setq-local org-indirect-buffer-display 'current-window)
+               (org-tree-to-indirect-buffer)))
           (setq header-line-format (propertize " org-now" 'face 'org-now-header))
           (toggle-truncate-lines 1)
           (rename-buffer "*org-now*")
