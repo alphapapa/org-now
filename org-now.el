@@ -139,9 +139,9 @@ See info node `(elisp)Cyclic Window Ordering'."
           ;; MAYBE: Optionally hide the mode line.  It looks nicer, but it also
           ;; hides whether the buffer has been modified, which can be important,
           ;; especially for users not using `real-auto-save'.
-          (pcase (length org-now-location)
-            (1 (switch-to-buffer (clone-indirect-buffer "*org-now*" nil)))
-            (_ (org-tree-to-indirect-buffer)))
+          (switch-to-buffer (clone-indirect-buffer "*org-now*" nil))
+          (when (> (length org-now-location) 1)
+            (org-narrow-to-subtree))
           (setq header-line-format (propertize " org-now" 'face 'org-now-header))
           (toggle-truncate-lines 1)
           (rename-buffer "*org-now*")
