@@ -2,8 +2,6 @@
 
 #+PROPERTY: LOGGING nil
 
-#+HTML: <a href="https://alphapapa.github.io/dont-tread-on-emacs/"><img src="images/dont-tread-on-emacs-150.png" align="right"></a>
-
 This package provides commands to conveniently show Org headings in a sidebar window while you're working on them.  A heading in one of your Org files is defined as the "now" heading, and other headings are refiled to it with one command, and back to their original location with another.
 
 The sidebar window is an indirect buffer created with =org-tree-to-indirect-buffer=, so you can work in it as you would a normal buffer.  Being a special Emacs side window, it's persistent, resisting being closed by accident by window management commands.
