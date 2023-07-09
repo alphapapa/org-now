@@ -104,7 +104,7 @@ subsequent string should be a heading in the outline hierarchy."
   :type '(repeat function))
 
 (defcustom org-now-no-other-window nil
-  "Whether `other-window' commands should cycle through the `org-now' sidebar window.
+  "Whether `other-window' should cycle through the `org-now' sidebar window.
 See info node `(elisp)Cyclic Window Ordering'."
   :type 'boolean)
 
