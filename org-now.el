@@ -129,6 +129,36 @@ See info node `(elisp)Cyclic Window Ordering'."
               (cons 'window-parameters (list (cons 'no-delete-other-windows t)
                                              (cons 'no-other-window org-now-no-other-window))))))))
 
+(defvar org-now-frame nil
+  "Frame used for `org-now-frame'.")
+
+(defcustom org-now-frame-parameters
+  `((name . "org-now")
+    (width . 25)
+    (minibuffer . nil)
+    (left . (- 0))
+    (top . 0.0)
+    (user-position . t)
+    (height . 1.0)
+    (user-size . t)
+    (undecorated . t)
+    (tab-bar-lines . 0))
+  "Frame parameters used for `org-now-frame'.")
+
+;;;###autoload
+(defun org-now-frame ()
+  "Show `org-now' sidebar in a frame."
+  (interactive)
+  (unless (frame-live-p org-now-frame)
+    (setf org-now-frame (make-frame-on-current-monitor org-now-frame-parameters)))
+  (with-selected-frame org-now-frame
+    (delete-other-windows)
+    (switch-to-buffer (org-now-buffer))
+    (setf (window-parameter nil 'mode-line-format) 'none
+          (window-parameter nil 'tab-line-format) 'none))
+  (raise-frame org-now-frame)
+  (modify-frame-parameters org-now-frame org-now-frame-parameters))
+
 ;;;###autoload
 (defun org-now-buffer ()
   "Return the \"now\" buffer, creating it if necessary."
