@@ -108,6 +108,12 @@ subsequent string should be a heading in the outline hierarchy."
 See info node `(elisp)Cyclic Window Ordering'."
   :type 'boolean)
 
+(defcustom org-now-window-parameters
+  `((tab-line-format . none)
+    (mode-line-format . none))
+  "Window parameters used for `org-now' window."
+  :type '(alist :key-type symbol :value-type sexp))
+
 (defface org-now-header
   '((t (:weight bold)))
   "For header in `org-now' buffer.")
@@ -126,8 +132,9 @@ See info node `(elisp)Cyclic Window Ordering'."
         (org-now-buffer)
         (list (cons 'side org-now-window-side)
               (cons 'slot 0)
-              (cons 'window-parameters (list (cons 'no-delete-other-windows t)
-                                             (cons 'no-other-window org-now-no-other-window))))))))
+              (cons 'window-parameters (append `((no-delete-other-windows . t)
+                                                 (no-other-window . ,org-now-no-other-window))
+                                               org-now-window-parameters)))))))
 
 ;;;###autoload
 (defun org-now-buffer ()
