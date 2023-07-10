@@ -10,6 +10,8 @@
 
 ;;; Commentary:
 
+;; TODO: Update description, readme, etc.
+
 ;; This package provides commands to conveniently show Org headings in a sidebar
 ;; window while you're working on them.  A heading in one of your Org files is
 ;; defined as the "now" heading, and other headings are refiled to it with one
