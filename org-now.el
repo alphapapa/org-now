@@ -124,17 +124,22 @@ See info node `(elisp)Cyclic Window Ordering'."
 
 ;;;###autoload
 (defun org-now ()
-  "Focus `org-now' sidebar window, displaying it anew if necessary."
+  "Toggle `org-now' side window.
+If the selected window shows the `org-now' buffer, call
+`quit-window'; otherwise, display/select the `org-now' buffer in
+a side window as configured."
   (interactive)
-  (select-window
-   (or (get-buffer-window (org-now-buffer))
-       (display-buffer-in-side-window
-        (org-now-buffer)
-        (list (cons 'side org-now-window-side)
-              (cons 'slot 0)
-              (cons 'window-parameters (append `((no-delete-other-windows . t)
-                                                 (no-other-window . ,org-now-no-other-window))
-                                               org-now-window-parameters)))))))
+  (if (equal (selected-window) (get-buffer-window (org-now-buffer)))
+      (quit-window)
+    (select-window
+     (or (get-buffer-window (org-now-buffer))
+         (display-buffer-in-side-window
+          (org-now-buffer)
+          (list (cons 'side org-now-window-side)
+                (cons 'slot 0)
+                (cons 'window-parameters (append `((no-delete-other-windows . t)
+                                                   (no-other-window . ,org-now-no-other-window))
+                                                 org-now-window-parameters))))))))
 
 ;;;###autoload
 (defun org-now-buffer ()
