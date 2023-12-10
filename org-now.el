@@ -89,7 +89,9 @@ A valid Org outline path list, starting with filename.  Each
 subsequent string should be a heading in the outline hierarchy."
   ;; MAYBE: This could also be a UUID, but that might cause Org to spend time
   ;; opening buffers looking for it.
-  :type '(repeat string))
+  :type '(list (file :must-match t)
+               (choice (repeat :inline t :tag "Outline path" string)
+                       (const :tag "None" nil))))
 
 (defcustom org-now-window-side 'right
   "Which side to show the sidebar on."
